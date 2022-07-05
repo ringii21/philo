@@ -6,7 +6,7 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 17:11:43 by abonard           #+#    #+#             */
-/*   Updated: 2022/06/09 20:19:05 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/05 15:30:53 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,39 +54,61 @@ int	ft_dead_check(t_general *info, t_philo *philo)
 
 	while (1)
 	{
-	i = 0;
-	while (info->is_dead == 0 && i < info->nb_philo)
-	{
-	//	printf("miskine:\033[0;31m %lld \033[0m\n",ft_get_millisec() - philo[i].last_spaghetti);
-		if (ft_get_millisec() - philo[i].last_spaghetti > info->t_death)
+		i = 0;
+		while (info->is_dead == 0 && i < info->nb_philo)
 		{
-			ft_declare(info, i, "is_dead");
-			info->is_dead = 1;
-			return (-1);
+	//	printf("miskine:\033[0;31m %lld \033[0m\n",ft_get_millisec() - philo[i].last_spaghetti);
+			if (ft_get_millisec() - philo[i].last_spaghetti > info->t_death)
+			{
+				ft_declare(info, i, "is_dead");
+				info->is_dead = 1;
+				return (-1);
+			}
+			usleep(200);
+			i++;
 		}
-		usleep(200);
-		i++;
-	}
 	}
 	return (1);
 }
 
+/*int ft_count_meal(t_general *info, t_philo *philo)
+{
+	int	i;
+
+	while(1)
+	{
+		i = 0;
+		while(info->is_dead == 0 && i < info->nb_philo)
+		{
+			if (ft_get_millisec() - philo[i].last_spaghetti > info->nb_meal)
+			{
+				ft_declare(info, i, "i eat spaghetti");
+				info->nb_meal++;
+				return (1);
+			}
+			usleep(200);
+			i++;
+		}
+	}
+	return (1);
+}*/
+
 int	ft_run_thread(t_general *general)
 {
 	int		i;
-	int fuck = 0;
+	int		tmp;
 	t_philo	*philo;
 
 	i = 0;
+	tmp = 0;
 	philo = general->philo;
 	general->timestamp = ft_get_millisec();
-	while (i < general->nb_philo)
+	while (++i < general->nb_philo)
 	{
-		fuck = pthread_create(&(philo[i].philo_id), NULL, routine, &(philo[i]));
-		if (fuck != 0)
+		tmp = pthread_create(&(philo[i].philo_id), NULL, routine, &(philo[i]));
+		if (tmp != 0)
 			return (-1);
 		philo[i].last_spaghetti = ft_get_millisec();
-		i++;
 	}
 	ft_dead_check(general, philo);
 	usleep(10000);
@@ -97,6 +119,5 @@ int	ft_run_thread(t_general *general)
 			break ;
 		j--;
 	}
-
 	return (0);
 }

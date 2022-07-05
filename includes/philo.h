@@ -6,7 +6,7 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:36:07 by abonard           #+#    #+#             */
-/*   Updated: 2022/06/09 19:56:50 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/05 14:56:16 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ struct s_general;
 
 typedef struct	s_philo
 {
-	int			id;
-	int			id_fork_l;
-	int			id_fork_r;
-	pthread_t	philo_id;
+	int					id;
+	int					id_fork_l;
+	int					id_fork_r;
+	pthread_t			philo_id;
 	struct s_general	*info;
-	long long	last_spaghetti;
+	long long			last_spaghetti;
 }	t_philo;
 
 typedef struct	s_general
@@ -53,5 +53,3 @@ int			ft_run_thread(t_general *general);
 long long	ft_get_millisec(void);
 
 #endif
-
-

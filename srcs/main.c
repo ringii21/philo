@@ -6,7 +6,7 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:35:31 by abonard           #+#    #+#             */
-/*   Updated: 2022/06/09 18:23:02 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/04 19:12:42 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	main(int argc, char **argv)
 	}
 	if (ft_initialize(argv, &general) == -1)
 	{
-		ft_putstr_fd("Cannot initialize MOUTEX\n", 2);
+		ft_putstr_fd("Cannot initialize Mutex\n", 2);
 		return (1);
 	}
 	if (ft_run_thread(&general) == -1)
