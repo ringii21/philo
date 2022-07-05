@@ -6,7 +6,7 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 17:11:43 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/05 15:30:53 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/05 18:42:44 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ void	ft_i_eat(t_philo *philo)
 	ft_declare(general, philo->id, "has taken a fork");
 	ft_declare(general, philo->id, "is eating");
 	ft_usleep_alpha(general->t_eat, general);
+	pthread_mutex_lock(&general->spaghetti);
 	philo->last_spaghetti = ft_get_millisec();
+	pthread_mutex_unlock(&general->spaghetti);
 	pthread_mutex_unlock(&(general->fork[philo->id_fork_l]));
 	pthread_mutex_unlock(&(general->fork[philo->id_fork_r]));
 }
@@ -38,8 +40,12 @@ void	*routine(void *philo_void)
 	general = philo->info;
 	if (philo->id % 2)
 		usleep(10000);
-	while (general->is_dead == 0)
+	while (1)
 	{
+		pthread_mutex_lock(&general->dead);
+		if (general->is_dead == 1)
+			break;
+		pthread_mutex_unlock(&general->dead);
 		ft_i_eat(philo);
 		ft_declare(general, philo->id, "is sleeping");
 		ft_usleep_alpha(general->t_sleep, general);
@@ -57,13 +63,16 @@ int	ft_dead_check(t_general *info, t_philo *philo)
 		i = 0;
 		while (info->is_dead == 0 && i < info->nb_philo)
 		{
-	//	printf("miskine:\033[0;31m %lld \033[0m\n",ft_get_millisec() - philo[i].last_spaghetti);
+			pthread_mutex_lock(&info->spaghetti);
 			if (ft_get_millisec() - philo[i].last_spaghetti > info->t_death)
 			{
-				ft_declare(info, i, "is_dead");
+				ft_declare(info, i, "is dead");
+				pthread_mutex_lock(&info->dead);
 				info->is_dead = 1;
+				pthread_mutex_unlock(&info->dead);
 				return (-1);
 			}
+			pthread_mutex_unlock(&info->spaghetti);
 			usleep(200);
 			i++;
 		}
@@ -99,7 +108,7 @@ int	ft_run_thread(t_general *general)
 	int		tmp;
 	t_philo	*philo;
 
-	i = 0;
+	i = -1;
 	tmp = 0;
 	philo = general->philo;
 	general->timestamp = ft_get_millisec();
@@ -108,7 +117,9 @@ int	ft_run_thread(t_general *general)
 		tmp = pthread_create(&(philo[i].philo_id), NULL, routine, &(philo[i]));
 		if (tmp != 0)
 			return (-1);
+		pthread_mutex_lock(&general->spaghetti);
 		philo[i].last_spaghetti = ft_get_millisec();
+		pthread_mutex_unlock(&general->spaghetti);
 	}
 	ft_dead_check(general, philo);
 	usleep(10000);

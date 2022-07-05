@@ -6,7 +6,7 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:35:31 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/04 19:12:42 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/05 17:59:41 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ int	ft_init_mutex(t_general *general)
 		i++;
 	}
 	res = pthread_mutex_init(&(general->write), NULL);
+	if (res != 0)
+		return (-1);
+	res = pthread_mutex_init(&(general->dead), NULL);
+	if (res != 0)
+		return (-1);
+	res = pthread_mutex_init(&(general->spaghetti), NULL);
 	if (res != 0)
 		return (-1);
 	return (0);
