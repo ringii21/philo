@@ -6,12 +6,17 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:36:07 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/05 17:58:55 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/12 17:44:25 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 #define PHILO_H
+
+#define GREEN "\033[0;92m"
+#define PURPLE "\033[0;95m"
+#define RED "\033[0;91m"
+#define NC "\033[0m"
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -26,6 +31,7 @@ typedef struct	s_philo
 	int					id;
 	int					id_fork_l;
 	int					id_fork_r;
+	int					nb_spaghet;
 	pthread_t			philo_id;
 	struct s_general	*info;
 	long long			last_spaghetti;
@@ -39,10 +45,12 @@ typedef struct	s_general
 	int				nb_philo;
 	int				nb_meal;
 	int				is_dead;
+	int				she_iz;
 	long long		timestamp;
 	pthread_mutex_t	write;
 	pthread_mutex_t	fork[200];
 	pthread_mutex_t	dead;
+	pthread_mutex_t	manger;
 	pthread_mutex_t	spaghetti;
 	t_philo			philo[200];
 }	t_general;

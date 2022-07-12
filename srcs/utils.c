@@ -6,13 +6,13 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:49:40 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/05 17:52:28 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/12 20:19:26 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int ft_atoi(const char *nptr)
+int	ft_atoi(const char *nptr)
 {
 	int i;
 	int n;

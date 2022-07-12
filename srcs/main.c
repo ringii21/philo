@@ -6,7 +6,7 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:35:31 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/05 17:59:41 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/12 20:18:42 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ int	ft_init_mutex(t_general *general)
 	res = pthread_mutex_init(&(general->spaghetti), NULL);
 	if (res != 0)
 		return (-1);
+	res = pthread_mutex_init(&(general->manger), NULL);
+	if (res != 0)
+		return (-1);
 	return (0);
 }
 
@@ -48,10 +51,12 @@ void	ft_init_philos(t_general *general)
 		general->philo[i].id = i + 1;
 		general->philo[i].id_fork_l = i;
 		general->philo[i].id_fork_r = i + 1 % general->nb_philo;
+		general->philo[i].nb_spaghet = -1;
 		general->philo[i].info = general;
 		i++;
 	}
 	general->is_dead = 0;
+	general->she_iz = 0;
 }
 
 int	ft_initialize(char **argv, t_general *general)
@@ -67,6 +72,8 @@ int	ft_initialize(char **argv, t_general *general)
 		if (general->nb_meal < 0)
 			return (-1);
 	}
+	else
+		general->nb_meal = -1;
 	if ((general->nb_philo < 1 || general->nb_philo > 200)
 		|| general->t_death < 0 || general->t_eat < 0
 		|| general->t_sleep < 0)
