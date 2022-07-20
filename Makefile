@@ -6,12 +6,21 @@
 #    By: abonard <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/09 18:45:35 by abonard           #+#    #+#              #
-#    Updated: 2022/07/20 15:27:56 by abonard          ###   ########.fr        #
+#    Updated: 2022/07/20 17:07:55 by abonard          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+NC = \033[0m
+RED = \033[0;91m
+ORANGE = \033[93m
+GREEN = \033[0;92m
+PURPLE = \033[0;95m
+BLUE = \033[0;34m
+BOLD = \033[1m
+
 SRCS		=	./srcs/main.c \
 				./srcs/utils.c \
+				./srcs/utils2.c\
 				./srcs/routine.c
 
 INCLUDES	=	./includes/philo.h \
@@ -26,7 +35,7 @@ OBJS		= ${SRCS:.c=.o}
 
 RM			= rm -f
 
-CFLAGS		= -Wall -Wextra -Werror -pthread -g3 -fsanitize=thread
+CFLAGS		= -Wall -Wextra -Werror -pthread
 
 .c.o:
 		@${CC} ${CFLAGS} -I${HEAD} -c $< -o ${<:.c=.o}
@@ -37,7 +46,7 @@ all:		${NAME} ${NAME2}
 
 ${NAME}:	${OBJS}
 			@${CC} ${CFLAGS} -I${HEAD} -o ${NAME} $(OBJS)
-			@echo "${GREEN}\nphilo  program	has been created${NC}"
+			@echo "${PURPLE}\nphilo  program	has been created${NC}"
 
 clean:
 			@${RM} ${OBJS}

@@ -6,7 +6,7 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:35:31 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/20 15:33:38 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/20 16:09:13 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_init_mutex(t_general *general)
 	{
 		res = pthread_mutex_init(&(general->fork[i]), NULL);
 		if (res != 0)
-			return(-1);
+			return (-1);
 		i++;
 	}
 	res = pthread_mutex_init(&(general->write), NULL);

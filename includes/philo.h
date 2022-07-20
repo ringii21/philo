@@ -6,27 +6,27 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:36:07 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/12 17:44:25 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/20 16:43:07 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
-#define PHILO_H
+# define PHILO_H
 
-#define GREEN "\033[0;92m"
-#define PURPLE "\033[0;95m"
-#define RED "\033[0;91m"
-#define NC "\033[0m"
+# define GREEN "\033[0;92m"
+# define PURPLE "\033[0;95m"
+# define RED "\033[0;91m"
+# define NC "\033[0m"
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <sys/time.h>
-#include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <pthread.h>
+# include <sys/time.h>
+# include <stdio.h>
 
-struct s_general;
+struct	s_general;
 
-typedef struct	s_philo
+typedef struct s_philo
 {
 	int					id;
 	int					id_fork_l;
@@ -37,7 +37,7 @@ typedef struct	s_philo
 	long long			last_spaghetti;
 }	t_philo;
 
-typedef struct	s_general
+typedef struct s_general
 {
 	int				t_sleep;
 	int				t_eat;
@@ -56,10 +56,12 @@ typedef struct	s_general
 }	t_general;
 
 int			ft_atoi(const char *nptr);
+int			ft_run_thread(t_general *general);
+int			ft_create_thread(t_general *general, t_philo *philo, int i);
 void		ft_putstr_fd(char *str, int fd);
 void		ft_usleep_alpha(long long time, t_general *general);
 void		ft_declare(t_general *general, int id_philo, char *str);
-int			ft_run_thread(t_general *general);
+void		*routine(void *philo_void);
 long long	ft_get_millisec(void);
 
 #endif
