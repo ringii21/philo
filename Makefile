@@ -6,7 +6,7 @@
 #    By: abonard <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/09 18:45:35 by abonard           #+#    #+#              #
-#    Updated: 2022/07/11 23:49:05 by abonard          ###   ########.fr        #
+#    Updated: 2022/07/20 15:27:56 by abonard          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ OBJS		= ${SRCS:.c=.o}
 
 RM			= rm -f
 
-CFLAGS		= -Wall -Wextra -Werror -pthread -g3
+CFLAGS		= -Wall -Wextra -Werror -pthread -g3 -fsanitize=thread
 
 .c.o:
 		@${CC} ${CFLAGS} -I${HEAD} -c $< -o ${<:.c=.o}

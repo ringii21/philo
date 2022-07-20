@@ -6,7 +6,7 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:49:40 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/12 20:19:26 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/20 15:44:45 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ long long	ft_get_millisec(void)
 
 void	ft_declare(t_general *general, int id_philo, char *str)
 {
-	pthread_mutex_lock(&general->dead);
+	//pthread_mutex_lock(&general->dead);
 	if (general->is_dead == 0)
 	{
 		pthread_mutex_lock(&(general->write));
@@ -68,7 +68,7 @@ void	ft_declare(t_general *general, int id_philo, char *str)
 			ft_get_millisec() - general->timestamp, id_philo, str);
 		pthread_mutex_unlock(&(general->write));
 	}
-	pthread_mutex_unlock(&general->dead);
+	//pthread_mutex_unlock(&general->dead);
 }
 
 void	ft_usleep_alpha(long long time, t_general *general)

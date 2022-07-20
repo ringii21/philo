@@ -6,7 +6,7 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:35:31 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/12 20:18:42 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/20 15:33:38 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,29 @@ int	ft_init_mutex(t_general *general)
 	res = pthread_mutex_init(&(general->manger), NULL);
 	if (res != 0)
 		return (-1);
+	return (0);
+}
+
+int	ft_isdigitalpha(char **str)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	while (str[i])
+	{
+		j = 0;
+		while (str[i][j])
+		{
+			if (str[i][j] < '0' || str[i][j] > '9')
+			{
+				ft_putstr_fd("Invalid character detected\n", 2);
+				return (1);
+			}
+			j++;
+		}
+		i++;
+	}
 	return (0);
 }
 
@@ -90,9 +113,11 @@ int	main(int argc, char **argv)
 
 	if (argc != 5 && argc != 6)
 	{
-		ft_putstr_fd("Number of arguments incorrect", 2);
+		ft_putstr_fd("Number of arguments incorrect\n", 2);
 		return (1);
 	}
+	if (ft_isdigitalpha(argv) == 1)
+		return (1);
 	if (ft_initialize(argv, &general) == -1)
 	{
 		ft_putstr_fd("Cannot initialize Mutex\n", 2);

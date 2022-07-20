@@ -6,7 +6,7 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 17:11:43 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/12 17:52:27 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/20 15:57:41 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int		ft_meals_check(t_general *info, t_philo *philo)
 				pthread_mutex_lock(&info->manger);
 				info->she_iz = 1;
 				pthread_mutex_unlock(&info->manger);
-				printf("EVERYBODAY AAAATE\n");
+				//printf("EVERYBODAY AAAATE\n");
 				return (-1);
 			}
 			usleep(200);
@@ -76,12 +76,14 @@ void	*routine(void *philo_void)
 	while (1)
 	{
 		pthread_mutex_lock(&general->dead);
-		pthread_mutex_lock(&general->manger);
+		//pthread_mutex_lock(&general->manger);
 		if (general->is_dead == 1)
 			break;
 		pthread_mutex_unlock(&general->dead);
-		pthread_mutex_unlock(&general->manger);
+		//pthread_mutex_unlock(&general->manger);
+		//pthread_mutex_lock(&general->spaghetti);
 		ft_i_eat(philo);
+		//pthread_mutex_unlock(&general->spaghetti);
 		ft_declare(general, philo->id, "is sleeping");
 		ft_usleep_alpha(general->t_sleep, general);
 		ft_declare(general, philo->id, "is thinking");
@@ -92,7 +94,9 @@ void	*routine(void *philo_void)
 int	ft_dead_check(t_general *info, t_philo *philo)
 {
 	int	i;
+	int	check;
 
+	check = 0;
 	while (1)
 	{
 		i = 0;
@@ -101,13 +105,16 @@ int	ft_dead_check(t_general *info, t_philo *philo)
 			pthread_mutex_lock(&info->spaghetti);
 			if (ft_get_millisec() - philo[i].last_spaghetti > info->t_death)
 			{
-				ft_declare(info, i, "is dead");
+				check = 1;
+				pthread_mutex_unlock(&info->spaghetti);
+				ft_declare(info, i + 1, "is dead");
 				pthread_mutex_lock(&info->dead);
 				info->is_dead = 1;
 				pthread_mutex_unlock(&info->dead);
 				return (-1);
 			}
-			pthread_mutex_unlock(&info->spaghetti);
+			if (check == 0)
+				pthread_mutex_unlock(&info->spaghetti);
 			usleep(200);
 			i++;
 		}
