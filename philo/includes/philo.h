@@ -6,7 +6,7 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:36:07 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/20 16:43:07 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/25 16:22:02 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ typedef struct s_general
 	int				she_iz;
 	long long		timestamp;
 	pthread_mutex_t	write;
-	pthread_mutex_t	fork[200];
+	pthread_mutex_t	fork[210];
 	pthread_mutex_t	dead;
 	pthread_mutex_t	manger;
 	pthread_mutex_t	spaghetti;
-	t_philo			philo[200];
+	t_philo			philo[210];
 }	t_general;
 
 int			ft_atoi(const char *nptr);

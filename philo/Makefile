@@ -6,7 +6,7 @@
 #    By: abonard <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/09 18:45:35 by abonard           #+#    #+#              #
-#    Updated: 2022/07/20 17:07:55 by abonard          ###   ########.fr        #
+#    Updated: 2022/07/25 16:14:57 by abonard          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,11 +23,11 @@ SRCS		=	./srcs/main.c \
 				./srcs/utils2.c\
 				./srcs/routine.c
 
-INCLUDES	=	./includes/philo.h \
+#INCLUDES	=	./philo/includes/philo.h \
 
 HEAD		= ./includes
 
-NAME		= philo
+NAME		= ./philo
 
 CC			= clang
 
@@ -42,7 +42,7 @@ CFLAGS		= -Wall -Wextra -Werror -pthread
 		@echo "${GREEN}[ OK ]	${ORANGE}${<:.s=.o}${NC}"
 
 
-all:		${NAME} ${NAME2}
+all:		${NAME}
 
 ${NAME}:	${OBJS}
 			@${CC} ${CFLAGS} -I${HEAD} -o ${NAME} $(OBJS)

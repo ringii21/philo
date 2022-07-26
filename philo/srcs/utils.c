@@ -6,7 +6,7 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:49:40 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/20 17:01:09 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/20 18:39:03 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	ft_declare(t_general *general, int id_philo, char *str)
 		pthread_mutex_unlock(&general->dead);
 		check = 1;
 		pthread_mutex_lock(&(general->write));
-		printf("time:%lli id_philo:%d action:%s\n",
+		printf("%lli %d %s\n",
 			ft_get_millisec() - general->timestamp, id_philo, str);
 		pthread_mutex_unlock(&(general->write));
 	}
