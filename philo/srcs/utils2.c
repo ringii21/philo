@@ -6,7 +6,7 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 16:37:03 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/20 17:08:35 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/27 15:48:01 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,24 @@ int	ft_create_thread(t_general *general, t_philo *philo, int i)
 		pthread_mutex_unlock(&general->spaghetti);
 	}
 	return (0);
+}
+
+int	ft_lock_eat_unlock(t_general *general, t_philo *philo)
+{
+	pthread_mutex_lock(&general->dead);
+	if (general->is_dead == 1)
+	{
+		pthread_mutex_unlock(&general->dead);
+		return (-1);
+	}
+	pthread_mutex_unlock(&general->dead);
+	ft_i_eat(philo);
+	pthread_mutex_lock(&general->dead);
+	if (general->is_dead == 1)
+	{
+		pthread_mutex_unlock(&general->dead);
+		return (-1);
+	}
+	pthread_mutex_unlock(&general->dead);
+	return (1);
 }

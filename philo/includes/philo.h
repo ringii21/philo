@@ -6,7 +6,7 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:36:07 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/25 16:22:02 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/27 15:49:44 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,12 @@ typedef struct s_general
 
 int			ft_atoi(const char *nptr);
 int			ft_run_thread(t_general *general);
+int			ft_lock_eat_unlock(t_general *general, t_philo *philo);
 int			ft_create_thread(t_general *general, t_philo *philo, int i);
+void		ft_i_eat(t_philo *philo);
 void		ft_putstr_fd(char *str, int fd);
 void		ft_usleep_alpha(long long time, t_general *general);
-void		ft_declare(t_general *general, int id_philo, char *str);
+void		ft_declare(t_general *general, int id_philo, char *str, int dead);
 void		*routine(void *philo_void);
 long long	ft_get_millisec(void);
 

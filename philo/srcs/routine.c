@@ -6,7 +6,7 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 17:11:43 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/27 14:54:42 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/27 15:59:50 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	ft_i_eat(t_philo *philo)
 
 	general = philo->info;
 	pthread_mutex_lock(&(general->fork[philo->id_fork_l]));
-	ft_declare(general, philo->id, "has taken a fork");
+	ft_declare(general, philo->id, "has taken a fork", 0);
 	pthread_mutex_lock(&(general->fork[philo->id_fork_r]));
-	ft_declare(general, philo->id, "has taken a fork");
-	ft_declare(general, philo->id, "is eating");
+	ft_declare(general, philo->id, "has taken a fork", 0);
+	ft_declare(general, philo->id, "is eating", 0);
 	pthread_mutex_lock(&general->manger);
 	philo->nb_spaghet++;
 	pthread_mutex_unlock(&general->manger);
@@ -74,14 +74,18 @@ void	*routine(void *philo_void)
 		usleep(10000);
 	while (1)
 	{
+		if (ft_lock_eat_unlock(general, philo) == -1)
+			break ;
+		ft_declare(general, philo->id, "is \033[0;93msleeping\033[0m", 0);
+		ft_usleep_alpha(general->t_sleep, general);
 		pthread_mutex_lock(&general->dead);
 		if (general->is_dead == 1)
+		{
+			pthread_mutex_unlock(&general->dead);
 			break ;
+		}
 		pthread_mutex_unlock(&general->dead);
-		ft_i_eat(philo);
-		ft_declare(general, philo->id, "is \033[0;93msleeping\033[0m");
-		ft_usleep_alpha(general->t_sleep, general);
-		ft_declare(general, philo->id, "is \033[0;94mthinking\033[0m");
+		ft_declare(general, philo->id, "is \033[0;94mthinking\033[0m", 0);
 	}
 	return (0);
 }
@@ -100,7 +104,7 @@ int	ft_dead_check(t_general *info, t_philo *philo, int check)
 			{
 				check = 1;
 				pthread_mutex_unlock(&info->spaghetti);
-				ft_declare(info, i + 1, "is \033[0;91mdead\033[0m");
+				ft_declare(info, i + 1, "is dead", 1);
 				pthread_mutex_lock(&info->dead);
 				info->is_dead = 1;
 				pthread_mutex_unlock(&info->dead);
@@ -118,14 +122,10 @@ int	ft_dead_check(t_general *info, t_philo *philo, int check)
 int	ft_run_thread(t_general *general)
 {
 	int		i;
-	int		tmp;
 	int		j;
-	int		max;
 	t_philo	*philo;
 
 	i = -1;
-	tmp = 1;
-	max = 0;
 	philo = general->philo;
 	general->timestamp = ft_get_millisec();
 	if (ft_create_thread(general, philo, i) == -1)
@@ -134,8 +134,11 @@ int	ft_run_thread(t_general *general)
 		if (ft_meals_check(general, philo) == -1)
 			return (0);
 	if (ft_dead_check(general, philo, 0) == -1)
+	{
+		usleep(10000);
 		return (0);
-	usleep(1500000);
+	}
+	usleep(2000000);
 	j = general->nb_philo;
 	while (j != 0)
 	{
