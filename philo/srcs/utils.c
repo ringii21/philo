@@ -60,23 +60,32 @@ long long	ft_get_millisec(void)
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-void	ft_declare(t_general *general, int id_philo, char *str)
+void	ft_declare(t_general *general, int id_philo, char *str, int dead)
 {
-	int	check;
+	//int	check;
 
-	check = 0;
-	pthread_mutex_lock(&general->dead);
-	if (general->is_dead == 0)
+	//check = 0;
+	//pthread_mutex_lock(&general->dead);
+	/* if (general->is_dead == 0)
 	{
 		pthread_mutex_unlock(&general->dead);
-		check = 1;
+		check = 1; */
+		/*pthread_mutex_lock(&general->dead);
+		if (general->is_dead == 1)
+		{
+			pthread_mutex_unlock(&(general->dead));
+			return ;
+		}*/
+		pthread_mutex_unlock(&(general->dead));
 		pthread_mutex_lock(&(general->write));
 		printf("%lli %d %s\n",
-			ft_get_millisec() - general->timestamp, id_philo, str);
+			ft_get_millisec() - general->timestamp, id_philo + 1, str);
+		if (dead == 1)
+			general->is_dead = 1;
 		pthread_mutex_unlock(&(general->write));
-	}
+	/* }
 	if (check == 0)
-		pthread_mutex_unlock(&general->dead);
+		pthread_mutex_unlock(&general->dead); */
 }
 
 void	ft_usleep_alpha(long long time, t_general *general)

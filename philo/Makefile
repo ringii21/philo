@@ -35,7 +35,7 @@ OBJS		= ${SRCS:.c=.o}
 
 RM			= rm -f
 
-CFLAGS		= -Wall -Wextra -Werror -pthread
+CFLAGS		= -Wall -Wextra -Werror -pthread -g -fsanitize=thread
 
 .c.o:
 		@${CC} ${CFLAGS} -I${HEAD} -c $< -o ${<:.c=.o}

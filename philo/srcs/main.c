@@ -18,13 +18,13 @@ int	ft_init_mutex(t_general *general)
 	int	i;
 	int	res;
 
-	i = 0;
-	while (i < general->nb_philo)
+	i = general->nb_philo - 1;
+	while (i >= 0)
 	{
 		res = pthread_mutex_init(&(general->fork[i]), NULL);
 		if (res != 0)
 			return (-1);
-		i++;
+		i--;
 	}
 	res = pthread_mutex_init(&(general->write), NULL);
 	if (res != 0)
@@ -68,15 +68,16 @@ void	ft_init_philos(t_general *general)
 {
 	int	i;
 
-	i = 0;
-	while (i < general->nb_philo)
+	i = general->nb_philo - 1;
+	while (i >= 0)
 	{
-		general->philo[i].id = i + 1;
+		general->philo[i].id = i;
 		general->philo[i].id_fork_l = i;
-		general->philo[i].id_fork_r = i + 1 % general->nb_philo;
+		general->philo[i].id_fork_r = (general->philo[i].id + 1) % general->nb_philo;
 		general->philo[i].nb_spaghet = -1;
 		general->philo[i].info = general;
-		i++;
+		general->philo[i].stop_it = 0;
+		i--;
 	}
 	general->is_dead = 0;
 	general->she_iz = 0;

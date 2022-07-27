@@ -35,6 +35,7 @@ typedef struct s_philo
 	pthread_t			philo_id;
 	struct s_general	*info;
 	long long			last_spaghetti;
+	int					stop_it;
 }	t_philo;
 
 typedef struct s_general
@@ -48,11 +49,11 @@ typedef struct s_general
 	int				she_iz;
 	long long		timestamp;
 	pthread_mutex_t	write;
-	pthread_mutex_t	fork[210];
+	pthread_mutex_t	fork[200];
 	pthread_mutex_t	dead;
 	pthread_mutex_t	manger;
 	pthread_mutex_t	spaghetti;
-	t_philo			philo[210];
+	t_philo			philo[200];
 }	t_general;
 
 int			ft_atoi(const char *nptr);
@@ -60,7 +61,7 @@ int			ft_run_thread(t_general *general);
 int			ft_create_thread(t_general *general, t_philo *philo, int i);
 void		ft_putstr_fd(char *str, int fd);
 void		ft_usleep_alpha(long long time, t_general *general);
-void		ft_declare(t_general *general, int id_philo, char *str);
+void		ft_declare(t_general *general, int id_philo, char *str, int dead);
 void		*routine(void *philo_void);
 long long	ft_get_millisec(void);
 
