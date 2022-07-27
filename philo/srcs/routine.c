@@ -6,7 +6,7 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 17:11:43 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/25 16:33:46 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/27 14:54:42 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,12 @@ int	ft_run_thread(t_general *general)
 	int		i;
 	int		tmp;
 	int		j;
+	int		max;
 	t_philo	*philo;
 
 	i = -1;
-	tmp = 0;
+	tmp = 1;
+	max = 0;
 	philo = general->philo;
 	general->timestamp = ft_get_millisec();
 	if (ft_create_thread(general, philo, i) == -1)
@@ -131,7 +133,8 @@ int	ft_run_thread(t_general *general)
 	if (general->nb_meal != -1)
 		if (ft_meals_check(general, philo) == -1)
 			return (0);
-	ft_dead_check(general, philo, 0);
+	if (ft_dead_check(general, philo, 0) == -1)
+		return (0);
 	usleep(1500000);
 	j = general->nb_philo;
 	while (j != 0)
