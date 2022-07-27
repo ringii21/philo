@@ -6,7 +6,7 @@
 /*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 17:11:43 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/27 15:59:50 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/27 16:02:16 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,12 +139,9 @@ int	ft_run_thread(t_general *general)
 		return (0);
 	}
 	usleep(2000000);
-	j = general->nb_philo;
-	while (j != 0)
-	{
+	j = general->nb_philo + 1;
+	while (--j != 0)
 		if (pthread_join(philo[j].philo_id, NULL) != 0)
 			break ;
-		j--;
-	}
 	return (0);
 }
