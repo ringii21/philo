@@ -6,7 +6,7 @@
 #    By: abonard <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/09 18:45:35 by abonard           #+#    #+#              #
-#    Updated: 2022/07/27 15:31:34 by abonard          ###   ########.fr        #
+#    Updated: 2022/07/27 16:07:22 by abonard          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,6 @@ SRCS		=	./srcs/main.c \
 				./srcs/utils2.c\
 				./srcs/routine.c
 
-#INCLUDES	=	./philo/includes/philo.h \
-
 HEAD		= ./includes
 
 NAME		= ./philo
@@ -35,7 +33,7 @@ OBJS		= ${SRCS:.c=.o}
 
 RM			= rm -f
 
-CFLAGS		= -Wall -Wextra -Werror -pthread -g3 -fsanitize=thread
+CFLAGS		= -Wall -Wextra -Werror -pthread
 
 .c.o:
 		@${CC} ${CFLAGS} -I${HEAD} -c $< -o ${<:.c=.o}
@@ -58,4 +56,4 @@ fclean:		clean
 
 re :		fclean all
 
-.PHONY:		all	clean	fclean re bonus2 bonus
+.PHONY:		all	clean	fclean re 

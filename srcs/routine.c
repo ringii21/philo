@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: abonard <abonard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 17:11:43 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/27 16:02:16 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/27 21:01:53 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_i_eat(t_philo *philo)
 	pthread_mutex_lock(&general->manger);
 	philo->nb_spaghet++;
 	pthread_mutex_unlock(&general->manger);
-	ft_usleep_alpha(general->t_eat, general);
+	ft_usleep_alpha(general->t_eat);
 	pthread_mutex_lock(&general->spaghetti);
 	philo->last_spaghetti = ft_get_millisec();
 	pthread_mutex_unlock(&general->spaghetti);
@@ -51,9 +51,9 @@ int	ft_meals_check(t_general *info, t_philo *philo)
 			pthread_mutex_unlock(&info->manger);
 			if (c == info->nb_philo)
 			{
-				pthread_mutex_lock(&info->manger);
+				pthread_mutex_lock(&info->dead);
 				info->she_iz = 1;
-				pthread_mutex_unlock(&info->manger);
+				pthread_mutex_unlock(&info->dead);
 				return (-1);
 			}
 			usleep(200);
@@ -77,9 +77,9 @@ void	*routine(void *philo_void)
 		if (ft_lock_eat_unlock(general, philo) == -1)
 			break ;
 		ft_declare(general, philo->id, "is \033[0;93msleeping\033[0m", 0);
-		ft_usleep_alpha(general->t_sleep, general);
+		ft_usleep_alpha(general->t_sleep);
 		pthread_mutex_lock(&general->dead);
-		if (general->is_dead == 1)
+		if (general->is_dead == 1 || general->she_iz == 1)
 		{
 			pthread_mutex_unlock(&general->dead);
 			break ;
@@ -104,7 +104,7 @@ int	ft_dead_check(t_general *info, t_philo *philo, int check)
 			{
 				check = 1;
 				pthread_mutex_unlock(&info->spaghetti);
-				ft_declare(info, i + 1, "is dead", 1);
+				ft_declare(info, i + 1, "is \033[0;91mdead\033[0m", 1);
 				pthread_mutex_lock(&info->dead);
 				info->is_dead = 1;
 				pthread_mutex_unlock(&info->dead);
@@ -119,29 +119,31 @@ int	ft_dead_check(t_general *info, t_philo *philo, int check)
 	return (1);
 }
 
-int	ft_run_thread(t_general *general)
+int	ft_run_thread(t_general *general, int i)
 {
-	int		i;
-	int		j;
 	t_philo	*philo;
 
-	i = -1;
 	philo = general->philo;
 	general->timestamp = ft_get_millisec();
+	if (ft_a_case(general) == 0)
+		return (0);
 	if (ft_create_thread(general, philo, i) == -1)
 		return (-1);
 	if (general->nb_meal != -1)
+	{
 		if (ft_meals_check(general, philo) == -1)
+		{
+			ft_join_philo(general, philo);
 			return (0);
+		}
+	}
 	if (ft_dead_check(general, philo, 0) == -1)
 	{
-		usleep(10000);
+		pthread_mutex_unlock(&general->write);
+		ft_join_philo(general, philo);
 		return (0);
 	}
-	usleep(2000000);
-	j = general->nb_philo + 1;
-	while (--j != 0)
-		if (pthread_join(philo[j].philo_id, NULL) != 0)
-			break ;
+	pthread_mutex_unlock(&(general->write));
+	ft_join_philo(general, philo);
 	return (0);
 }

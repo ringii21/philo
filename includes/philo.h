@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: abonard <abonard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:36:07 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/27 15:49:44 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/27 20:49:42 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,16 @@ typedef struct s_general
 }	t_general;
 
 int			ft_atoi(const char *nptr);
-int			ft_run_thread(t_general *general);
+int			ft_run_thread(t_general *general, int i);
 int			ft_lock_eat_unlock(t_general *general, t_philo *philo);
 int			ft_create_thread(t_general *general, t_philo *philo, int i);
+int			ft_a_case(t_general *general);
 void		ft_i_eat(t_philo *philo);
 void		ft_putstr_fd(char *str, int fd);
-void		ft_usleep_alpha(long long time, t_general *general);
+void		ft_usleep_alpha(long long time);
 void		ft_declare(t_general *general, int id_philo, char *str, int dead);
 void		*routine(void *philo_void);
+void		ft_join_philo(t_general *general, t_philo *philo);
 long long	ft_get_millisec(void);
 
 #endif

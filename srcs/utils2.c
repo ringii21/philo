@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: abonard <abonard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 16:37:03 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/27 15:48:01 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/27 20:51:20 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,27 @@ int	ft_create_thread(t_general *general, t_philo *philo, int i)
 	return (0);
 }
 
+void	ft_declare(t_general *general, int id_philo, char *str, int dead)
+{
+	pthread_mutex_lock(&(general->write));
+	pthread_mutex_lock(&general->dead);
+	if (general->is_dead == 1 || general->she_iz == 1)
+	{
+		pthread_mutex_unlock(&general->dead);
+		pthread_mutex_unlock(&general->write);
+		return ;
+	}
+	pthread_mutex_unlock(&general->dead);
+	printf("%lli %d %s\n",
+		ft_get_millisec() - general->timestamp, id_philo, str);
+	if (dead == 0)
+		pthread_mutex_unlock(&(general->write));
+}
+
 int	ft_lock_eat_unlock(t_general *general, t_philo *philo)
 {
 	pthread_mutex_lock(&general->dead);
-	if (general->is_dead == 1)
+	if (general->is_dead == 1 || general->she_iz == 1)
 	{
 		pthread_mutex_unlock(&general->dead);
 		return (-1);
@@ -42,11 +59,24 @@ int	ft_lock_eat_unlock(t_general *general, t_philo *philo)
 	pthread_mutex_unlock(&general->dead);
 	ft_i_eat(philo);
 	pthread_mutex_lock(&general->dead);
-	if (general->is_dead == 1)
+	if (general->is_dead == 1 || general->she_iz == 1)
 	{
 		pthread_mutex_unlock(&general->dead);
 		return (-1);
 	}
 	pthread_mutex_unlock(&general->dead);
 	return (1);
+}
+
+void	ft_join_philo(t_general *general, t_philo *philo)
+{
+	int	j;
+
+	usleep(1500000);
+	j = general->nb_philo;
+	while (--j >= 0)
+	{
+		if (pthread_join(philo[j].philo_id, NULL) != 0)
+			break ;
+	}
 }

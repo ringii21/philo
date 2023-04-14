@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: abonard <abonard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:35:31 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/20 16:09:13 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/27 20:48:22 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int	main(int argc, char **argv)
 		ft_putstr_fd("Cannot initialize Mutex\n", 2);
 		return (1);
 	}
-	if (ft_run_thread(&general) == -1)
+	if (ft_run_thread(&general, -1) == -1)
 	{
 		ft_putstr_fd("Cannot run the program\n", 2);
 		return (1);

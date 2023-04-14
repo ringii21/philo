@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abonard <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: abonard <abonard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:49:40 by abonard           #+#    #+#             */
-/*   Updated: 2022/07/27 15:50:53 by abonard          ###   ########.fr       */
+/*   Updated: 2022/07/27 21:01:52 by abonard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,19 @@ void	ft_putstr_fd(char *str, int fd)
 	}
 }
 
+int	ft_a_case(t_general *general)
+{
+	if (general->nb_philo == 1)
+	{
+		ft_declare(general, 1, "has taken a fork", 0);
+		ft_usleep_alpha(general->t_death + 1);
+		ft_declare(general, 1, "is \033[0;91mdead\033[0m", 1);
+		pthread_mutex_unlock(&general->write);
+		return (0);
+	}
+	return (1);
+}
+
 long long	ft_get_millisec(void)
 {
 	struct timeval	time;
@@ -60,26 +73,13 @@ long long	ft_get_millisec(void)
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-void	ft_declare(t_general *general, int id_philo, char *str, int dead)
-{
-	pthread_mutex_lock(&(general->write));
-	printf("%lli %d %s\n",
-		ft_get_millisec() - general->timestamp, id_philo, str);
-	if (dead == 0)
-		pthread_mutex_unlock(&(general->write));
-}
-
-void	ft_usleep_alpha(long long time, t_general *general)
+void	ft_usleep_alpha(long long time)
 {
 	long long	i;
 
 	i = ft_get_millisec();
 	while (1)
 	{
-		pthread_mutex_lock(&general->dead);
-		if (general->is_dead == 1)
-			break ;
-		pthread_mutex_unlock(&general->dead);
 		if (ft_get_millisec() - i >= time)
 			break ;
 		usleep(50);
